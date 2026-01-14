@@ -14,3 +14,26 @@ The React Compiler is not enabled on this template because of its impact on dev 
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+---
+
+## Learning Outcomes
+After completing this experiment, the learner will be able to:
+
+- Understand the concept of **Single Page Applications (SPA)**
+- Implement **client-side routing** using React Router
+- Create and manage multiple React components
+- Use **Link** and **Routes** for navigation without page reload
+- Build and deploy a React application using **Vite**
+- Generate a production build using `npm run build`
+- Push build output to a GitHub repository
+
+---
+
+## Conclusion
+This experiment successfully demonstrates how a Single Page Application can be built using React and React Router. SPA architecture improves performance by dynamically updating content without refreshing the entire page, making it suitable for modern web applications.
+
+---
+
+## Result
+The Single Page Application was implemented successfully with working navigation between Home, About, and Contact pages.
