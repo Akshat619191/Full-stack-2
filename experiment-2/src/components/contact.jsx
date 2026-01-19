@@ -1,9 +1,17 @@
+import TextFieldDemo from "./textfield"
+import SwitchDemo from "./switch"
+
 const Contact = () => {
   return (
     <div style={{ padding: "20px" }}>
       <h2>Contact</h2>
-      <p>Email: akshatsharma42000@gmail.com</p>
-      <p>Phone: +91 XXXXX XX340</p>
+
+      <p>Fill the form below to contact us:</p>
+
+      <TextFieldDemo />
+      <br /><br />
+
+      <SwitchDemo />
     </div>
   )
 }

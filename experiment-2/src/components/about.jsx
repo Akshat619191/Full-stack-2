@@ -1,11 +1,21 @@
+import RatingDemo from "./rating"
+import TextFieldDemo from "./textfield"
+
 const About = () => {
   return (
     <div style={{ padding: "20px" }}>
       <h2>About</h2>
+
       <p>
-        This project demonstrates Material UI components using React and Vite.
-        Routing is implemented using React Router.
+        This page explains the purpose of the project and demonstrates
+        reuse of Material UI components across different routes.
       </p>
+
+      <h4>Give Project Feedback</h4>
+      <TextFieldDemo />
+      <br /><br />
+
+      <RatingDemo />
     </div>
   )
 }
