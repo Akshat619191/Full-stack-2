@@ -1,3 +1,25 @@
+Learning Outcomes:
+Understand the concept of state management in React applications.
+
+Implement local state using React hooks and analyze its scope and limitations.
+
+Share data across components using React Context API.
+
+Implement global state management using Redux Toolkit.
+
+Differentiate between Local State, Context API, and Redux based on use cases.
+
+Manage application state in a centralized and predictable manner using Redux.
+
+Use React Redux hooks (useSelector, useDispatch) effectively.
+
+Build modular and reusable components following React best practices.
+
+Debug and resolve common issues related to state management.
+
+Understand how scalable React applications handle complex state logic.
+
+
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

@@ -1,26 +1,28 @@
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import Home from "./components/home";
-import About from "./components/about";
-import Contact from "./components/contact";
+import './App.css'
+import LocalStateCounter from './Components/CounterLocalState'
+import CounterContextParent from './Components/CounterGlobalContextParent'
+import CounterReduxParent from './Components/CounterReduxParent'
+
+import { CounterContextProvider } from './Components/context/CounterGlobalContextAPI'
 
 function App() {
+
   return (
-    <BrowserRouter>
-      <h1>Experiment 1 - SPA</h1>
+    <>
+      <h2>Experiment 4: To demonstrate State Management</h2> 
+      <LocalStateCounter cno="1" />
+      <LocalStateCounter cno="2" />
 
-      <nav>
-        <Link to="/">Home</Link> |{" "}
-        <Link to="/about">About</Link> |{" "}
-        <Link to="/contact">Contact</Link>
-      </nav>
+      <CounterContextProvider>
+        <CounterContextParent cno="1"/>
+        <CounterContextParent cno="2"/> 
+      </CounterContextProvider> 
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-      </Routes>
-    </BrowserRouter>
-  );
+
+      <CounterReduxParent cno="1"/>
+      <CounterReduxParent cno="2"/>
+    </>
+  )
 }
 
-export default App;
+export default App
