@@ -1,4 +1,24 @@
-# React + Vite
+Learning Outcomes : 
+
+Understand the concept of Single Page Applications (SPA) and how routing works in React.
+
+Implement Lazy Loading using React.lazy() to dynamically import components.
+
+Use Suspense to display fallback content while lazy components are loading.
+
+Analyze how lazy loading helps in reducing initial bundle size and improving application performance.
+
+Integrate React Router DOM for navigation between multiple components.
+
+Develop modular React components such as Home, About, and Contact pages.
+
+Apply basic CSS styling to enhance the user interface of an SPA.
+
+Build and optimize a React project using Vite build tools.
+
+Deploy the production build (dist folder) on hosting platforms like Netlify.
+
+Understand real-world use cases of lazy loading in large-scale web applications.# React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
