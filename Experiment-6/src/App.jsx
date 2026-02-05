@@ -1,84 +1,183 @@
-import React from "react";
-import "./App.css";
-
-import { useForm } from "react-hook-form";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-
-/* ---------------- VALIDATION SCHEMA ---------------- */
-
-const schema = yup.object({
-  username: yup
-    .string()
-    .required("Username is required")
-    .min(3, "Minimum 3 characters"),
-
-  email: yup
-    .string()
-    .required("Email is required")
-    .email("Invalid email format"),
-
-  password: yup
-    .string()
-    .required("Password is required")
-    .min(8, "Minimum 8 characters"),
-
-  terms: yup
-    .boolean()
-    .oneOf([true], "You must accept terms & conditions"),
-});
-
-/* ---------------- MAIN COMPONENT ---------------- */
+import React, { useState } from "react";
+import {
+  Container,
+  TextField,
+  Checkbox,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+  FormLabel,
+  Button,
+  Typography,
+  Box,
+} from "@mui/material";
 
 function App() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm({
-    resolver: yupResolver(schema),
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    gender: "",
+    agree: false,
   });
 
-  const onSubmit = (data) => {
-    console.log("Form Data:", data);
-    alert("Registration Successful ✅");
-    reset();
+  const [errors, setErrors] = useState({});
+
+
+  const handleChange = (e) => {
+    const { name, value, checked, type } = e.target;
+
+    setFormData({
+      ...formData,
+      [name]: type === "checkbox" ? checked : value,
+    });
   };
 
+
+  const validate = () => {
+    let tempErrors = {};
+
+    if (!formData.name) {
+      tempErrors.name = "Name is required";
+    }
+
+    if (!formData.email) {
+      tempErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      tempErrors.email = "Invalid email format";
+    }
+
+    if (!formData.password) {
+      tempErrors.password = "Password is required";
+    } else if (formData.password.length < 6) {
+      tempErrors.password = "Minimum 6 characters";
+    }
+
+    if (!formData.gender) {
+      tempErrors.gender = "Select gender";
+    }
+
+    if (!formData.agree) {
+      tempErrors.agree = "You must accept terms";
+    }
+
+    setErrors(tempErrors);
+    return Object.keys(tempErrors).length === 0;
+  };
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (validate()) {
+      alert("Form Submitted Successfully ✅");
+      console.log(formData);
+    }
+  };
+
+
   return (
-    <div className="form-container">
-      <h2>Registration Form</h2>
+    <Container maxWidth="sm">
+      <Box
+        sx={{
+          mt: 5,
+          p: 3,
+          boxShadow: 3,
+          borderRadius: 2,
+          backgroundColor: "#fff",
+        }}
+      >
+        <Typography variant="h5" align="center" gutterBottom>
+          MUI Registration Form
+        </Typography>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="form-group">
-          <input placeholder="Username" {...register("username")} />
-          <p className="error">{errors.username?.message}</p>
-        </div>
-
-        <div className="form-group">
-          <input placeholder="Email" {...register("email")} />
-          <p className="error">{errors.email?.message}</p>
-        </div>
-
-        <div className="form-group">
-          <input
-            type="password"
-            placeholder="Password"
-            {...register("password")}
+        <form onSubmit={handleSubmit}>
+          
+          <TextField
+            fullWidth
+            label="Name"
+            name="name"
+            margin="normal"
+            value={formData.name}
+            onChange={handleChange}
+            error={!!errors.name}
+            helperText={errors.name}
           />
-          <p className="error">{errors.password?.message}</p>
-        </div>
 
-        <div className="checkbox-group">
-          <input type="checkbox" {...register("terms")} />
-          <label>I accept terms & conditions</label>
-        </div>
-        <p className="error">{errors.terms?.message}</p>
+          <TextField
+            fullWidth
+            label="Email"
+            name="email"
+            margin="normal"
+            value={formData.email}
+            onChange={handleChange}
+            error={!!errors.email}
+            helperText={errors.email}
+          />
 
-        <button type="submit">Register</button>
-      </form>
-    </div>
+          <TextField
+            fullWidth
+            type="password"
+            label="Password"
+            name="password"
+            margin="normal"
+            value={formData.password}
+            onChange={handleChange}
+            error={!!errors.password}
+            helperText={errors.password}
+          />
+
+          <FormControl margin="normal" error={!!errors.gender}>
+            <FormLabel>Gender</FormLabel>
+            <RadioGroup
+              row
+              name="gender"
+              value={formData.gender}
+              onChange={handleChange}
+            >
+              <FormControlLabel
+                value="male"
+                control={<Radio />}
+                label="Male"
+              />
+              <FormControlLabel
+                value="female"
+                control={<Radio />}
+                label="Female"
+              />
+            </RadioGroup>
+            <Typography color="error" variant="caption">
+              {errors.gender}
+            </Typography>
+          </FormControl>
+
+          <FormControlLabel
+            control={
+              <Checkbox
+                name="agree"
+                checked={formData.agree}
+                onChange={handleChange}
+              />
+            }
+            label="I accept Terms & Conditions"
+          />
+          <Typography color="error" variant="caption">
+            {errors.agree}
+          </Typography>
+
+          
+          <Button
+            fullWidth
+            variant="contained"
+            type="submit"
+            sx={{ mt: 2 }}
+          >
+            Submit
+          </Button>
+        </form>
+      </Box>
+    </Container>
   );
 }
 
