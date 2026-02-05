@@ -1,30 +1,23 @@
-Learning outcomes : After completing this experiment, we learned to:
+Learning Outcomes:
+Understand the concept of form handling in React applications.
 
-1:Understand the importance of form handling in modern web applications.
+Create and manage controlled components using React state and hooks.
 
-2:Explain the concept of controlled and uncontrolled components in React.
+Implement client-side validation for user inputs.
 
-3:Manage form state efficiently using React Hooks.
+Use the React Hook Form library to simplify form management.
 
-4:Implement form handling using the React Hook Form library.
+Apply schema-based validation using the Yup validation library.
 
-5:Apply schema-based validation using the Yup validation library.
+Display validation error messages dynamically.
 
-6:Validate user inputs such as username, email, password, and checkbox fields.
+Handle different input types such as text, email, password, checkbox, and file upload.
 
-7:Display validation error messages dynamically based on user input.
+Build structured and user-friendly registration/profile forms.
 
-8:Prevent form submission when validation rules are not satisfied.
+Manage form submission and reset operations.
 
-9:Handle form submission events effectively.
-
-10:Reset form fields after successful submission.
-
-11:Improve user experience through real-time validation feedback.
-
-12:Organize React components and files following best practices.
-
-# React + Vite
+Improve user experience by applying validation rules and feedback mechanisms.# React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
