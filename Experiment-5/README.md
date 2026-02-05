@@ -1,23 +1,4 @@
-Learning Outcomes:
-Understand the concept of form handling in React applications.
-
-Create and manage controlled components using React state and hooks.
-
-Implement client-side validation for user inputs.
-
-Use the React Hook Form library to simplify form management.
-
-Apply schema-based validation using the Yup validation library.
-
-Display validation error messages dynamically.
-
-Handle different input types such as text, email, password, checkbox, and file upload.
-
-Build structured and user-friendly registration/profile forms.
-
-Manage form submission and reset operations.
-
-Improve user experience by applying validation rules and feedback mechanisms.# React + Vite
+# React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
