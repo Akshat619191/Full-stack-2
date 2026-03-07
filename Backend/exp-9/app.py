@@ -1,3 +1,6 @@
+# from flask import Flask, app, request, jsonify
+# from auth_routes import app as auth_app
+
 from flask import Flask, request, jsonify
 from flask_jwt_extended import (
     JWTManager, create_access_token,
@@ -10,7 +13,9 @@ app.config["JWT_SECRET_KEY"] = "super-secret-key"
 
 jwt = JWTManager(app)
 
-
+# ================================
+# In-memory user store
+# ================================
 users = {
     "admin": {
         "password": "admin123",
@@ -22,7 +27,9 @@ users = {
     }
 }
 
-
+# ================================
+# 1. BASIC AUTHENTICATION
+# ================================
 @app.route("/basic-protected")
 def basic_protected():
     auth = request.authorization
@@ -38,6 +45,11 @@ def basic_protected():
     return jsonify({"error": "Invalid credentials"}), 401
 
 
+# ================================
+# 2. SIMPLE TOKEN AUTHENTICATION
+# ================================
+
+# Generate simple token (not JWT)
 @app.route("/token-login", methods=["POST"])
 def token_login():
     data = request.json
@@ -70,6 +82,10 @@ def token_protected():
     return jsonify({"error": "Invalid Token"}), 401
 
 
+# ================================
+# 3. JWT AUTHENTICATION
+# ================================
+
 @app.route("/jwt-login", methods=["POST"])
 def jwt_login():
     data = request.json
@@ -92,6 +108,10 @@ def jwt_protected():
     return jsonify({"message": f"JWT Auth Success. Welcome {current_user}!"})
 
 
+
+# ================================
+# ROOT ROUTE
+# ================================
 @app.route("/")
 def home():
     return jsonify({
@@ -107,4 +127,4 @@ def home():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=3000, debug=True)
