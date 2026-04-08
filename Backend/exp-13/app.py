@@ -1,19 +1,19 @@
 from flask import Flask, request, jsonify
+import os
 
 app = Flask(__name__)
 
-# Temporary in-memory database (for testing)
+# In-memory database
 students = []
 current_id = 1
 
 
-# CREATE STUDENT
+# CREATE
 @app.route('/students', methods=['POST'])
 def create_student():
     global current_id
     data = request.json
 
-    # Validation
     if not data.get("name"):
         return jsonify({"error": "Name is required"}), 400
 
@@ -28,23 +28,22 @@ def create_student():
     return jsonify(student), 201
 
 
-# GET ALL STUDENTS
+# READ ALL
 @app.route('/students', methods=['GET'])
 def get_students():
     return jsonify(students), 200
 
 
-# GET SINGLE STUDENT
+# READ ONE
 @app.route('/students/<int:id>', methods=['GET'])
 def get_student(id):
     for student in students:
         if student["id"] == id:
             return jsonify(student), 200
-
     return jsonify({"error": "Student not found"}), 404
 
 
-# UPDATE STUDENT
+# UPDATE
 @app.route('/students/<int:id>', methods=['PUT'])
 def update_student(id):
     data = request.json
@@ -57,14 +56,14 @@ def update_student(id):
     return jsonify({"error": "Student not found"}), 404
 
 
-# DELETE STUDENT
+# DELETE
 @app.route('/students/<int:id>', methods=['DELETE'])
 def delete_student(id):
     global students
     students = [s for s in students if s["id"] != id]
-
     return jsonify({"message": "Student deleted"}), 200
 
 
+# RUN APP (Render compatible)
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
