@@ -1,15 +1,17 @@
-# Experiment 16 - Unit Testing
+## Learning Outcomes 
 
-## Backend Testing
-- Flask API tested using Pytest
+- Understood the concept of unit testing for backend applications using Pytest.
 
-## How to Run
+- Gained hands-on experience in testing RESTful APIs (CRUD operations) in Flask.
 
-### Install dependencies
-pip install -r requirements.txt
+- Learned how to write test cases for different HTTP methods (GET, POST, PUT, DELETE).
 
-### Run tests
-pytest -v
+- Explored code coverage analysis using pytest-cov to measure test effectiveness.
 
-### Coverage
-pytest --cov=app --cov-report=term-missing --cov-report=html
+- Understood how to generate and interpret coverage reports.
+
+- Learned to automate testing using GitHub Actions for continuous integration.
+
+- Improved debugging skills by identifying and fixing errors during test execution.
+
+- Gained practical experience in structuring a testable backend application.
