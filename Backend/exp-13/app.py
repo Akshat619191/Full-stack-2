@@ -1,69 +1,116 @@
 from flask import Flask, request, jsonify
-import os
+from flask_sqlalchemy import SQLAlchemy
+from marshmallow import Schema, fields, validate, ValidationError
+import pymysql
+import os 
+
+pymysql.install_as_MySQLdb()
 
 app = Flask(__name__)
 
-# In-memory database
-students = []
-current_id = 1
+# Update MySQL credentials below
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "sqlite:///fallback.db")
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+db = SQLAlchemy(app)
 
-# CREATE
+# ===============================
+# Student Model
+# ===============================
+class Student(db.Model):
+    __tablename__ = "students"
+    id = db.Column(db.Integer, primary_key=True)
+    uid = db.Column(db.String(20), unique=True, nullable=False)
+    name = db.Column(db.String(100), nullable=False)
+    age = db.Column(db.Integer, nullable=False)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "uid": self.uid,
+            "name": self.name,
+            "age": self.age,
+        }
+
+# ===============================
+# Validation Schema
+# ===============================
+class StudentSchema(Schema):
+    name = fields.Str(required=True, validate=validate.Length(min=2))
+    age = fields.Int(required=True, validate=validate.Range(min=1, max=120))
+    uid = fields.Str(required=True)
+
+student_schema = StudentSchema()
+student_update_schema = StudentSchema(partial=True)
+
+# ===============================
+# Global Error Handler
+# ===============================
+@app.errorhandler(ValidationError)
+def handle_validation_error(e):
+    return jsonify({"validation_errors": e.messages}), 400
+
+# ===============================
+# CREATE Student
+# ===============================
 @app.route('/students', methods=['POST'])
 def create_student():
-    global current_id
-    data = request.json
+    data = request.get_json()
+    validated_data = student_schema.load(data)
 
-    if not data.get("name"):
-        return jsonify({"error": "Name is required"}), 400
+    student = Student(**validated_data)
+    db.session.add(student)
+    db.session.commit()
 
-    student = {
-        "id": current_id,
-        "name": data["name"]
-    }
+    return jsonify(student.to_dict()), 201
 
-    students.append(student)
-    current_id += 1
-
-    return jsonify(student), 201
-
-
-# READ ALL
+# ===============================
+# READ All Students
+# ===============================
 @app.route('/students', methods=['GET'])
 def get_students():
-    return jsonify(students), 200
+    students = Student.query.all()
+    return jsonify([s.to_dict() for s in students])
 
-
-# READ ONE
+# ===============================
+# READ One Student
+# ===============================
 @app.route('/students/<int:id>', methods=['GET'])
 def get_student(id):
-    for student in students:
-        if student["id"] == id:
-            return jsonify(student), 200
-    return jsonify({"error": "Student not found"}), 404
+    student = Student.query.get_or_404(id)
+    return jsonify(student.to_dict())
 
-
-# UPDATE
+# ===============================
+# UPDATE Student
+# ===============================
 @app.route('/students/<int:id>', methods=['PUT'])
 def update_student(id):
-    data = request.json
+    student = Student.query.get_or_404(id)
+    data = request.get_json()
+    validated_data = student_update_schema.load(data)
 
-    for student in students:
-        if student["id"] == id:
-            student["name"] = data.get("name", student["name"])
-            return jsonify(student), 200
+    for key, value in validated_data.items():
+        setattr(student, key, value)
 
-    return jsonify({"error": "Student not found"}), 404
+    db.session.commit()
+    return jsonify(student.to_dict())
 
-
-# DELETE
+# ===============================
+# DELETE Student
+# ===============================
 @app.route('/students/<int:id>', methods=['DELETE'])
 def delete_student(id):
-    global students
-    students = [s for s in students if s["id"] != id]
-    return jsonify({"message": "Student deleted"}), 200
+    student = Student.query.get_or_404(id)
+    db.session.delete(student)
+    db.session.commit()
+    return jsonify({"message": "Student deleted successfully"})
 
+@app.route('/')
+def home():
+    return jsonify({"message": "Flask MySQL Students CRUD API with Validation Running"})
 
-# RUN APP (Render compatible)
+with app.app_context():
+    db.create_all()
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
+    app.run(host="0.0.0.0", port=5000, debug=True)
