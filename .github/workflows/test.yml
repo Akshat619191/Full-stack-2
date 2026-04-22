@@ -23,7 +23,7 @@ jobs:
         cd Backend/exp-20
         pip install -r requirements.txt
 
-    - name: Run Tests
+    - name: Run Backend Tests
       run: |
         cd Backend/exp-20
         pytest
